@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_recipe_card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/widget_recipe_text_name"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/widget_recipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/widget_recipe_ingredient_heading"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="left"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/widget_recipe_ingredient_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:padding="2dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
