@@ -108,13 +108,11 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        recipeRecyclerView = findViewById(R.id.recyclerview);
         ButterKnife.bind(this);
         int orientation = GridLayout.VERTICAL;
         int span = 1;
-        boolean reverseLayout = false;
         GridLayoutManager layoutManager = new GridLayoutManager(
-                this, span, orientation, reverseLayout);
+                this, span, orientation, false);
         recipeRecyclerView.setHasFixedSize(true);
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeAdapter = new RecipeAdapter(this, this);
@@ -158,12 +156,12 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
 
     @Override
     public void onClick(Recipe recipe) {
-        Intent recipeInfoDetailActivityIntent = new Intent(
+        Intent recipeIntent = new Intent(
                 this, RecipeDetailActivity.class);
         Bundle recipeBundle = new Bundle();
         recipeBundle.putParcelable("RECIPE_DETAIL_INFORMATION", recipe);
-        recipeInfoDetailActivityIntent.putExtras(recipeBundle);
-        startActivity(recipeInfoDetailActivityIntent);
+        recipeIntent.putExtras(recipeBundle);
+        startActivity(recipeIntent);
     }
 
     private void showErrorMessage(){

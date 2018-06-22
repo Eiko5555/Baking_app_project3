@@ -1,5 +1,7 @@
 package com.udacity_developing_android.eiko.baking_app_project3.utils;
 
+import android.util.Log;
+
 import com.udacity_developing_android.eiko.baking_app_project3.Recipe;
 import com.udacity_developing_android.eiko.baking_app_project3.RecipeStep;
 
@@ -65,11 +67,11 @@ public class RecipeJsonUtil {
                 JSONArray ingredients = recipeObject.getJSONArray(
                         RECIPE_INGREDIENT);
                 JSONArray steps = recipeObject.getJSONArray(RECIPE_STEP);
+                Log.i("Json data: ", steps.toString());
 
-                for (int ingredientIndex = 0; ingredientIndex < ingredients.length();
-                     ingredientIndex++) {
+                for (int p = 0; p < ingredients.length(); p++) {
                     JSONObject ingredientObject = (JSONObject)
-                            ingredients.get(ingredientIndex);
+                            ingredients.get(p);
                     String quantity = ingredientObject.getString(
                             RECIPE_INGREDIENTS_QUANTITY);
                     String measure = ingredientObject.getString(RECIPE_INGREDIENTS_MEASURE);
@@ -77,11 +79,12 @@ public class RecipeJsonUtil {
                             RECIPE_KEY_INGREDIENT);
 
                     String ingredientInfo = quantity + " " + measure + " " + ingredient;
+                    Log.i("Json data: ", ingredientInfo);
 
                     recipeIngredientList.add(ingredientInfo);
                 }
-                for (int stepIndex = 0; stepIndex < steps.length(); stepIndex++) {
-                    JSONObject stepObject = (JSONObject) steps.get(stepIndex);
+                for (int t = 0; t < steps.length(); t++) {
+                    JSONObject stepObject = (JSONObject) steps.get(t);
 
                     String stepId = stepObject.getString(RECIPE_STEPS_ID);
                     String stepShortDescription = stepObject.getString(
@@ -89,6 +92,9 @@ public class RecipeJsonUtil {
                     String stepDescription = stepObject.getString(RECIPE_STEP_DESCRIPTION);
                     String stepVideoUrl = stepObject.getString(RECIPE_STEP_VIDEO_URL);
                     String stepThumbnailUrl = stepObject.getString(RECIPE_STEP_THUMBNAIL);
+                    Log.i("RecipeJsonUtil: ", stepVideoUrl+ " "+ stepThumbnailUrl );
+                    Log.i("Json data desc: ", stepDescription);
+                    Log.i("Json data shortdes: ", stepShortDescription);
 
                     RecipeStep recipeStep = new RecipeStep();
                     recipeStep.setStepId(stepId);

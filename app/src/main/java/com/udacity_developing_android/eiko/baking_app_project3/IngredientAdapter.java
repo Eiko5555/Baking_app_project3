@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<
@@ -25,11 +26,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<
     @Override
     public IngredientAdapter.IngredientViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
+
         Context parentContex = parent.getContext();
         int layoutId = R.layout.recipe_ingredient_item;
         LayoutInflater inflater = LayoutInflater.from(parentContex);
-        boolean shouldAttach = false;
-        View view = inflater.inflate(layoutId, parent, shouldAttach);
+        View view = inflater.inflate(layoutId, parent, false);
 
         return new IngredientViewHolder(view);
     }
@@ -50,6 +51,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.ingredient_item)
         TextView ingredientItem;
 
         public IngredientViewHolder(View itemView) {

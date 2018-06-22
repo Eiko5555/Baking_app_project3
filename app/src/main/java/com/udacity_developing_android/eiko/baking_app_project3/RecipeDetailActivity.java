@@ -21,30 +21,13 @@ public class RecipeDetailActivity extends AppCompatActivity
     private RecipeStep selectedStep;
     private RecipeStepDetailFragment stepDetailFragment;
 
-    public static RecipeStep navigateStep(String stepId) {
-        RecipeStep recipeStep = null;
-        ArrayList<RecipeStep> currentRecipeStep = recipe.getSteps();
-        for (int stepIndex = 0;
-             stepIndex < currentRecipeStep.size(); stepIndex++) {
-            if (stepId.equals(String.valueOf(currentRecipeStep.size() - 1))) {
-                recipeStep = null;
-            } else if (stepId.equals(currentRecipeStep.get(stepIndex).getStepId())) {
-                recipeStep = currentRecipeStep.get(stepIndex);
-            } else if (Integer.parseInt(stepId) < stepIndex) {
-                recipeStep = currentRecipeStep.get(stepIndex);
-                break;
-            }
-        }
-        return recipeStep;
-    }
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_detail);
 
         Bundle extra = getIntent().getExtras();
-        recipe = extra.getParcelable("RECIPE_DETAIL_INFO");
+        recipe = extra.getParcelable("RECIPE_DETAIL_INFORMATION");
 
         if (savedInstanceState != null) {
             selectedStep = savedInstanceState.getParcelable(
@@ -70,9 +53,25 @@ public class RecipeDetailActivity extends AppCompatActivity
                 stepDetailFragment = new RecipeStepDetailFragment();
                 stepDetailFragment = (RecipeStepDetailFragment)
                         getSupportFragmentManager().getFragment(
-                                savedInstanceState, "Step video saved");
+                                savedInstanceState, "video saved");
             }
         }
+    }
+    public static RecipeStep navigateStep(String stepId) {
+        RecipeStep recipeStep = null;
+        ArrayList<RecipeStep> currentRecipeStep = recipe.getSteps();
+        for (int stepIndex = 0;
+             stepIndex < currentRecipeStep.size(); stepIndex++) {
+            if (stepId.equals(String.valueOf(currentRecipeStep.size() - 1))) {
+                recipeStep = null;
+            } else if (stepId.equals(currentRecipeStep.get(stepIndex).getStepId())) {
+                recipeStep = currentRecipeStep.get(stepIndex);
+            } else if (Integer.parseInt(stepId) < stepIndex) {
+                recipeStep = currentRecipeStep.get(stepIndex);
+                break;
+            }
+        }
+        return recipeStep;
     }
 
     @Override

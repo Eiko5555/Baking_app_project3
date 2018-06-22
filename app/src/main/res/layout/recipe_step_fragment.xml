@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nested_sscrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,9 +15,10 @@
         <TextView
             android:id="@+id/recipe_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
+            android:textStyle="bold"
             tools:text="cookie" />
 
         <LinearLayout
@@ -37,7 +37,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recipe_ingredient_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,14 +59,15 @@
                 android:id="@+id/recipe_step_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_marginBottom="5dp"
                 tools:text="subtitle.." />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recipe_step_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
 
         </LinearLayout>
     </LinearLayout>

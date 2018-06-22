@@ -1,8 +1,10 @@
 package com.udacity_developing_android.eiko.baking_app_project3.widget;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.google.gson.Gson;
 
 import com.udacity_developing_android.eiko.baking_app_project3.R;
 import com.udacity_developing_android.eiko.baking_app_project3.Recipe;
+import com.udacity_developing_android.eiko.baking_app_project3.RecipeDetailActivity;
 import com.udacity_developing_android.eiko.baking_app_project3.utils.RecipeJsonUtil;
 
 import org.json.JSONException;
@@ -25,6 +28,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ConfigRecipeWidget extends Activity {
@@ -34,60 +38,19 @@ public class ConfigRecipeWidget extends Activity {
     private static final String PREF_NAME = "RecipeWidget";
     private static final String PREF_KEY = "recipeWidget";
     private static final String PRE_RECIPE_KEY = "currentRecipe";
-    private static final HashMap<String, String>
-            recipeHashmap = new HashMap<>();
+    private static final HashMap<String, String> recipeHashmap = new HashMap<>();
     private static ArrayList<String> spinnerOption = new ArrayList<>();
     private static AppWidgetManager widgetManager;
     private static RemoteViews remoteViews;
-    int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    Spinner recipeNameSpinner;
-    Button appWidgetButton;
     private ArrayList<Recipe> recipeList;
+    int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    @BindView(R.id.spinner_recipe_name)
+    Spinner recipeNameSpinner;
+    @BindView(R.id.button_add)
+    Button appWidgetButton;
 
     public ConfigRecipeWidget() {
         super();
-    }
-
-    public static void saveRecipePreference(Context context,
-                                            int appWidgetId,
-                                            String text,
-                                            Recipe currentRecipe) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(
-                PREF_NAME, 0).edit();
-        prefs.putString(PRE_RECIPE_KEY + appWidgetId, text);
-        Gson gson = new Gson();
-        String json = gson.toJson(currentRecipe);
-        prefs.putString(PRE_RECIPE_KEY + appWidgetId, json);
-        prefs.apply();
-    }
-
-    public static Recipe getCurrentRecipePreference(Context context,
-                                                    int appwidgetId) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                PREF_NAME, 0);
-        String jsoncurrent = preferences.getString(PRE_RECIPE_KEY +
-                appwidgetId, null);
-        Gson gsoncurrent = new Gson();
-        Recipe currentRecipe = gsoncurrent.fromJson(jsoncurrent,
-                Recipe.class);
-        return currentRecipe;
-    }
-
-    public static void deleteRecipePreference(Context context,
-                                              int appwidgetId) {
-        SharedPreferences.Editor preferences = context.getSharedPreferences(
-                PREF_NAME, 0).edit();
-        preferences.remove(PRE_RECIPE_KEY + appwidgetId);
-        preferences.apply();
-    }
-
-    public static String getRecipeDetailPreference(Context context,
-                                                   int appWidgetId) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                PREF_NAME, 0);
-        String recipeDetail = preferences.getString(PRE_RECIPE_KEY +
-                appWidgetId, null);
-        return recipeDetail;
     }
 
     @Override
@@ -179,8 +142,64 @@ public class ConfigRecipeWidget extends Activity {
                 saveRecipePreference(getApplicationContext(),
                         appWidgetId, selectedRecipe + ":" +
                                 recipeHashmap.get(selectedRecipe), recipe);
+                Bundle extras = new Bundle();
+                extras.putParcelable("RECIPE_DETAIL_INFORMATION", recipe);
+                Intent intent = new Intent(getApplicationContext(),
+                        RecipeDetailActivity.class);
+                intent.putExtras(extras);
+                PendingIntent pendintINtent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                remoteViews.setOnClickPendingIntent(R.id.widget_recipe_card,
+                        pendintINtent);
+                widgetManager.updateAppWidget(appWidgetId, remoteViews);
+                Intent result = new Intent();
+                result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                setResult(RESULT_OK, result);
+                finish();
             }
         });
 
+    }
+    public static void saveRecipePreference(Context context,
+                                            int appWidgetId,
+                                            String text,
+                                            Recipe currentRecipe) {
+        SharedPreferences.Editor prefs = context.getSharedPreferences(
+                PREF_NAME, 0).edit();
+        prefs.putString(PREF_KEY + appWidgetId, text);
+        Gson gson = new Gson();
+        String json = gson.toJson(currentRecipe);
+        prefs.putString(PRE_RECIPE_KEY + appWidgetId, json);
+        prefs.apply();
+    }
+
+    public static Recipe getCurrentRecipePreference(Context context,
+                                                    int appwidgetId) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREF_NAME, 0);
+        String jsoncurrent = preferences.getString(PRE_RECIPE_KEY +
+                appwidgetId, null);
+        Gson gsoncurrent = new Gson();
+        Recipe currentRecipe = gsoncurrent.fromJson(jsoncurrent,
+                Recipe.class);
+        return currentRecipe;
+    }
+
+    public static void deleteRecipePreference(Context context,
+                                              int appwidgetId) {
+        SharedPreferences.Editor preferences = context.getSharedPreferences(
+                PREF_NAME, 0).edit();
+        preferences.remove(PREF_KEY + appwidgetId);
+        preferences.apply();
+    }
+
+    public static String getRecipeDetailPreference(Context context,
+                                                   int appWidgetId) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREF_NAME, 0);
+        String recipeDetail = preferences.getString(PREF_KEY +
+                appWidgetId, null);
+        return recipeDetail;
     }
 }

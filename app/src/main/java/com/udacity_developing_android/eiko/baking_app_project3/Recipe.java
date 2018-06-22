@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Recipe implements Parcelable {
 
-    private String id, name, serving, image;
+    private String id, name, servings, image;
     private ArrayList<String> ingredient;
     private ArrayList<RecipeStep> steps;
 
@@ -20,7 +20,7 @@ public class Recipe implements Parcelable {
                   ArrayList<RecipeStep> steps){
         this.id = id;
         this.name = name;
-        this.serving = serving;
+        this.servings = serving;
         this.image = image;
         this.ingredient = ingredient;
         this.steps = steps;
@@ -29,7 +29,7 @@ public class Recipe implements Parcelable {
     protected Recipe(Parcel in) {
         id = in.readString();
         name = in.readString();
-        serving = in.readString();
+        servings = in.readString();
         image = in.readString();
         ingredient = in.createStringArrayList();
         steps = in.createTypedArrayList(RecipeStep.CREATOR);
@@ -39,7 +39,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(serving);
+        dest.writeString(servings);
         dest.writeString(image);
         dest.writeStringList(ingredient);
         dest.writeTypedList(steps);
@@ -79,11 +79,11 @@ public class Recipe implements Parcelable {
     }
 
     public String getServing() {
-        return serving;
+        return servings;
     }
 
     public void setServing(String serving) {
-        this.serving = serving;
+        this.servings = serving;
     }
 
     public String getImage() {

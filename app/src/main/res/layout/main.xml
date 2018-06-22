@@ -14,8 +14,9 @@
         android:id="@+id/error_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="no connection."/>
+        android:padding="15dp"
+        android:text="no connection."
+        android:visibility="invisible"/>
 
     <ProgressBar
         android:id="@+id/loading"

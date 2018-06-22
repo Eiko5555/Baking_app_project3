@@ -30,6 +30,10 @@ public class ExpoMediaPlayerUtils {
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
                         MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         mMediaSession.setMediaButtonReceiver(null);
+        mStateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(PlaybackStateCompat.ACTION_PLAY|
+                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS|
+                PlaybackStateCompat.ACTION_PLAY_PAUSE);
         mMediaSession.setPlaybackState(mStateBuilder.build());
         mMediaSession.setCallback(new MySessionCallback(exoPlayer));
         mMediaSession.setActive(true);
@@ -44,7 +48,7 @@ public class ExpoMediaPlayerUtils {
                     context, trackSelector, loadControl);
 
             String userAgent = Util.getUserAgent(
-                    context, "BakingApp");
+                    context, "Baking Recipe");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
                     new DefaultDataSourceFactory(context, userAgent),
                     new DefaultExtractorsFactory(), null, null);

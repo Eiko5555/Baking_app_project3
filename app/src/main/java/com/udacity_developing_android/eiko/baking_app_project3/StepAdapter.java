@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepAdapter extends RecyclerView.Adapter<
@@ -28,11 +29,10 @@ public class StepAdapter extends RecyclerView.Adapter<
 
     @Override
     public StepViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context parentContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(parentContext);
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
         int layoutId = R.layout.recipe_step_item;
-        boolean shoukdAttach = false;
-        View view = inflater.inflate(layoutId, parent, shoukdAttach);
+        View view = inflater.inflate(layoutId, parent, false);
 
         return new StepViewHolder(view);
     }
@@ -71,7 +71,10 @@ public class StepAdapter extends RecyclerView.Adapter<
 
     public class StepViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
+
+        @BindView(R.id.step_id)
         TextView stepId;
+        @BindView(R.id.step_definition)
         TextView stepDescripton;
 
         public StepViewHolder(View view) {

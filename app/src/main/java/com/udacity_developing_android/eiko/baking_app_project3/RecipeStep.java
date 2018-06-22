@@ -5,21 +5,9 @@ import android.os.Parcelable;
 
 public class RecipeStep implements Parcelable {
 
-    public static final Creator<RecipeStep> CREATOR = new Creator<RecipeStep>() {
-        @Override
-        public RecipeStep createFromParcel(Parcel in) {
-            return new RecipeStep(in);
-        }
-
-        @Override
-        public RecipeStep[] newArray(int size) {
-            return new RecipeStep[size];
-        }
-    };
     private String stepId, shortDescription, description,
             videoUrl, thumbnailUrl;
-
-    public RecipeStep() {
+    public RecipeStep(){
         super();
     }
 
@@ -42,11 +30,6 @@ public class RecipeStep implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(stepId);
         parcel.writeString(shortDescription);
@@ -54,6 +37,23 @@ public class RecipeStep implements Parcelable {
         parcel.writeString(videoUrl);
         parcel.writeString(thumbnailUrl);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<RecipeStep> CREATOR = new Creator<RecipeStep>() {
+        @Override
+        public RecipeStep createFromParcel(Parcel in) {
+            return new RecipeStep(in);
+        }
+
+        @Override
+        public RecipeStep[] newArray(int size) {
+            return new RecipeStep[size];
+        }
+    };
 
     public String getStepId() {
         return stepId;

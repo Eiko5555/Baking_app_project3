@@ -71,10 +71,11 @@ public class NetworkUtil {
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    return null;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return null;
                 }
-                return null;
             }
 
             @Override
@@ -90,7 +91,7 @@ public class NetworkUtil {
         final String[] params = new String[]{url};
         new AsyncTask<String, Void, String>() {
             @Override
-            protected String doInBackground(String... strings) {
+            protected String doInBackground(String... params) {
                 try {
                     URL url = new URL(params[0]);
                     HttpURLConnection connection =
@@ -100,10 +101,12 @@ public class NetworkUtil {
                     return urlconnectiontype;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    return null;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return null;
                 }
-                return null;
+//                return null;
             }
 
             @Override

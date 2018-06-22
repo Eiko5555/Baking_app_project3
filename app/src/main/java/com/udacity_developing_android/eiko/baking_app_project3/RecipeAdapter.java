@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,13 +43,15 @@ public class RecipeAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(
-            RecipeAdapterViewHolder holder,
+            RecipeAdapter.RecipeAdapterViewHolder holder,
             int position) {
         String recipeName = reipeArrayList.get(position).getName();
         Log.i("RecipeAdapter LOG" ,recipeName);
+
         String recipeImgUrl = reipeArrayList.get(position).getImage();
-        RecipeAdapterViewHolder viewholder = holder;
-        viewholder.recipeNameTextView.setText(recipeName);
+
+        holder.recipeNameTextView.setText(recipeName);
+         Log.v("recipe image URL: ", recipeImgUrl);
 
         if (recipeImgUrl.isEmpty()) {
             String imageResName = recipeName.replaceAll("\\s+", "")
@@ -56,9 +59,10 @@ public class RecipeAdapter extends RecyclerView.Adapter
             int imageResId = mContext.getResources().getIdentifier(
                     imageResName, "drawable",
                     mContext.getPackageName());
-
+            Log.i("image res ID: "+String.valueOf(imageResId), "imageRes name"+imageResName);
+//ID :0 , name Nutellapie
             Picasso.get()//Picasso.get(mContext)
-                    .load(imageResId)
+                    .load(R.drawable.recipebook)
                     .placeholder(R.drawable.no_image)
                     .error(R.drawable.no_image)
                     .into(holder.recipeImageview);
@@ -77,11 +81,6 @@ public class RecipeAdapter extends RecyclerView.Adapter
             return 0;
         }
         return reipeArrayList.size();
-    }
-
-    public void setRecipeData(ArrayList<Recipe> recipeData) {
-        reipeArrayList = recipeData;
-        notifyDataSetChanged();
     }
 
     public interface RecipeAdapterOnClickHandler {
@@ -109,5 +108,9 @@ public class RecipeAdapter extends RecyclerView.Adapter
             Recipe recipeObject = reipeArrayList.get(position);
             recipeAdapterOnClickHandler.onClick(recipeObject);
         }
+    }
+    public void setRecipeData(ArrayList<Recipe> recipeData) {
+        reipeArrayList = recipeData;
+        notifyDataSetChanged();
     }
 }

@@ -37,6 +37,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
         if (recipewidgetDetail.contains(DIVIDER)){
             String[] parts = recipewidgetDetail.split(DIVIDER);
             recipeName = parts[1];
+            recipeIngredient = parts[1];
         }
 
         ArrayList<String> ingredientList = new ArrayList<>(Arrays.asList(

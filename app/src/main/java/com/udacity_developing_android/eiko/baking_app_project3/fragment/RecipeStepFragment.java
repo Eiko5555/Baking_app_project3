@@ -1,6 +1,7 @@
 package com.udacity_developing_android.eiko.baking_app_project3.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,24 +19,35 @@ import com.udacity_developing_android.eiko.baking_app_project3.StepAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeStepFragment extends Fragment implements
         StepAdapter.StepAdapterOnclicklistner {
 
-    RecyclerView recipeIngredientRecyclerView, recipeStepRecyclerView;
-    TextView recipeNameTextView, recipeHeading, stepHeading, stepSubHeading;
-    IngredientAdapter ingredientAdapter;
-    StepAdapter stepAdapter;
     private OnStepSelectedListener selectedListener;
     private Recipe recipe;
 
-    public RecipeStepFragment() {
-    }
+    @BindView(R.id.recipe_ingredient_recyclerview)
+    RecyclerView recipeIngredientRecyclerView;
+    @BindView(R.id.recipe_step_recyclerview)
+    RecyclerView recipeStepRecyclerview;
+    @BindView(R.id.recipe_name)
+    TextView recipeNameTextView;
+    @BindView(R.id.recipe_ingredient_title)
+    TextView recipeHeading;
+    @BindView(R.id.recipe_step_title)
+    TextView stepHeading;
+    @BindView(R.id.recipe_step_subtitle)
+    TextView stepSubTitle;
 
-    @Override
-    public void onClick(RecipeStep currentStep) {
-        selectedListener.onStepSelected(currentStep);
+    IngredientAdapter ingredientAdapter;
+    StepAdapter stepAdapter;
+
+    public RecipeStepFragment() {    }
+
+    public interface OnStepSelectedListener {
+        void onStepSelected(RecipeStep currentStep);
     }
 
     @Nullable
@@ -48,11 +60,11 @@ public class RecipeStepFragment extends Fragment implements
                 container, false);
         ButterKnife.bind(this, rootview);
         Bundle recipeBundle = getActivity().getIntent().getExtras();
-        recipe = recipeBundle.getParcelable("RECIPE_DETAIL_INFO");
+        recipe = recipeBundle.getParcelable("RECIPE_DETAIL_INFORMATION");
         recipeNameTextView.setText(recipe.getName());
-        recipeHeading.setText("");
-        stepHeading.setText("");
-        stepSubHeading.setText("");
+        recipeHeading.setText("Ingridients");
+        stepHeading.setText("Steps");
+        stepSubTitle.setText("Click steps to see detail.");
 
         ArrayList<String> ingredientList = recipe.getIngredient();
         ArrayList<RecipeStep> recipeStepList = recipe.getSteps();
@@ -62,14 +74,21 @@ public class RecipeStepFragment extends Fragment implements
 
         recipeIngredientRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity()));
-        recipeStepRecyclerView.setLayoutManager(
+        recipeStepRecyclerview.setLayoutManager(
                 new LinearLayoutManager(getActivity()));
         recipeIngredientRecyclerView.setAdapter(ingredientAdapter);
-        recipeStepRecyclerView.setAdapter(stepAdapter);
+        recipeStepRecyclerview.setAdapter(stepAdapter);
         return rootview;
     }
+    @Override
+    public void onClick(RecipeStep currentStep) {
+        selectedListener.onStepSelected(currentStep);
+    }
 
-    public interface OnStepSelectedListener {
-        void onStepSelected(RecipeStep currentStep);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnStepSelectedListener)
+        {selectedListener = (OnStepSelectedListener) getActivity();}
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,10 @@ import com.udacity_developing_android.eiko.baking_app_project3.RecipeDetailActiv
 import com.udacity_developing_android.eiko.baking_app_project3.RecipeStep;
 import com.udacity_developing_android.eiko.baking_app_project3.RecipeStepDetailActivity;
 import com.udacity_developing_android.eiko.baking_app_project3.utils.ExpoMediaPlayerUtils;
+import com.udacity_developing_android.eiko.baking_app_project3.utils.NetworkUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class RecipeStepDetailFragment extends Fragment {
 
@@ -32,19 +34,24 @@ public class RecipeStepDetailFragment extends Fragment {
             RecipeStepDetailFragment.class.getSimpleName();
     private static final String PLAYER_STATUE = "player_current";
     private static final String PLAYER_READY = "player_ready";
-    private static final String SELECTED_POSITION = "player_selected_position";
-    private static boolean expoPlayerWhenReady = true;
-    SimpleExoPlayerView simpleExoPlayerView;
-    TextView stepdescriptionTextview;
-    Button navigationButton;
-    String thumbUrl = null;
-    LinearLayout stepDetailLayout;
-    ImageView noImageAvailableImageview;
-    String activityName = "";
     private SimpleExoPlayer exoPlayer;
     private Long videoPlayerCurrentPosition;
     private RecipeStep recipeStep = null;
     private Uri videoUri = null;
+    String thumbUrl = null;
+    String activityName = "";
+    private static boolean expoPlayerWhenReady = true;
+
+    @BindView(R.id.step_playerView)
+    SimpleExoPlayerView simpleExoPlayerView;
+    @BindView(R.id.step_description)
+    TextView stepdescriptionTextview;
+    @BindView(R.id.step_buton)
+    Button navigationButton;
+    @BindView(R.id.recipe_step_fragment)
+    LinearLayout stepDetailLayout;
+    @BindView(R.id.no_video_img)
+    ImageView noImageAvailableImageview;
 
     @Nullable
     @Override
@@ -54,23 +61,29 @@ public class RecipeStepDetailFragment extends Fragment {
 
         int layoutFragment = R.layout.recipe_step_detail_fragment;
         final View rootview = inflater.inflate(layoutFragment, container,
-                false);
-        ButterKnife.bind(thumbUrl, rootview);
+                    false);
+        ButterKnife.bind(this, rootview);
+
         if (isAdded()) {
             activityName = getActivity().getClass().getSimpleName();
         }
-        if (activityName.equals(RecipeDetailActivity.class.getSimpleName())) {
+        if (activityName.equals(RecipeStepDetailActivity.class.getSimpleName())) {
             recipeStep = ((RecipeStepDetailActivity) getActivity())
                     .getCurrentStep();
-        } else {
+//            Log.i("RecipeStep 2: ",recipeStep.toString());
+        }
+        else {
             recipeStep = ((RecipeDetailActivity) getActivity())
                     .getCurrentStep();
             navigationButton.setVisibility(View.GONE);
+//            Log.i("RecipeStep 3: ",recipeStep.toString());
         }
 
-        stepdescriptionTextview.setText(recipeStep.getShortDescription());
+//        Log.i("RecipeStep 4: ",recipeStep.toString());
+        stepdescriptionTextview.setText(recipeStep.getDescription());
         videoUri = Uri.parse(recipeStep.getVideoUrl());
         thumbUrl = recipeStep.getThumbnailUrl().trim();
+        Log.i(videoUri.toString(), thumbUrl);
 
         if (!String.valueOf(videoUri).equals("")) {
             noImageAvailableImageview.setVisibility(View.GONE);
@@ -81,7 +94,7 @@ public class RecipeStepDetailFragment extends Fragment {
 
             if (!String.valueOf(thumbUrl).equals("")) {
                 Picasso.get()
-                        .load(String.valueOf(thumbUrl))
+                        .load(String.valueOf(NetworkUtil.getBitmapFromUrl(thumbUrl)))
                         .placeholder(R.drawable.no_image)
                         .error(R.drawable.no_image)
                         .into(noImageAvailableImageview);
