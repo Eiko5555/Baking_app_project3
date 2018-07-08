@@ -59,7 +59,8 @@ public class RecipeAdapter extends RecyclerView.Adapter
             int imageResId = mContext.getResources().getIdentifier(
                     imageResName, "drawable",
                     mContext.getPackageName());
-            Log.i("image res ID: "+String.valueOf(imageResId), "imageRes name"+imageResName);
+            Log.i("image res ID: "+String.valueOf(imageResId),
+                    "imageRes name"+imageResName);
 //ID :0 , name Nutellapie
             Picasso.get()//Picasso.get(mContext)
                     .load(R.drawable.recipebook)

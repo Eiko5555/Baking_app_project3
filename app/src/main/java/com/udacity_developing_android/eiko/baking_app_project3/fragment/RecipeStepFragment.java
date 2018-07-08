@@ -1,11 +1,12 @@
 package com.udacity_developing_android.eiko.baking_app_project3.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +45,11 @@ public class RecipeStepFragment extends Fragment implements
     IngredientAdapter ingredientAdapter;
     StepAdapter stepAdapter;
 
-    public RecipeStepFragment() {    }
-
     public interface OnStepSelectedListener {
         void onStepSelected(RecipeStep currentStep);
+    }
+
+    public RecipeStepFragment() {
     }
 
     @Nullable
@@ -62,7 +64,7 @@ public class RecipeStepFragment extends Fragment implements
         Bundle recipeBundle = getActivity().getIntent().getExtras();
         recipe = recipeBundle.getParcelable("RECIPE_DETAIL_INFORMATION");
         recipeNameTextView.setText(recipe.getName());
-        recipeHeading.setText("Ingridients");
+        recipeHeading.setText("Ingredients");
         stepHeading.setText("Steps");
         stepSubTitle.setText("Click steps to see detail.");
 
@@ -80,6 +82,7 @@ public class RecipeStepFragment extends Fragment implements
         recipeStepRecyclerview.setAdapter(stepAdapter);
         return rootview;
     }
+
     @Override
     public void onClick(RecipeStep currentStep) {
         selectedListener.onStepSelected(currentStep);
@@ -88,7 +91,9 @@ public class RecipeStepFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnStepSelectedListener)
-        {selectedListener = (OnStepSelectedListener) getActivity();}
+        if (context instanceof OnStepSelectedListener) {
+            selectedListener = (OnStepSelectedListener) getActivity();
+        }
+        Log.i("RecipestepFragment", "onAttatch");
     }
 }

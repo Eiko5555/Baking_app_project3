@@ -1,17 +1,14 @@
 package com.udacity_developing_android.eiko.baking_app_project3;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.FragmentManager;
 
 import com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepDetailFragment;
 import com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepFragment;
-
+import com.udacity_developing_android.eiko.baking_app_project3.Recipe;
+import com.udacity_developing_android.eiko.baking_app_project3.RecipeStep;
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 
 public class RecipeDetailActivity extends AppCompatActivity
         implements RecipeStepFragment.OnStepSelectedListener {
@@ -92,7 +89,7 @@ public class RecipeDetailActivity extends AppCompatActivity
                     .commit();
         } else {
             Bundle extra = new Bundle();
-            extra.putParcelable("CURRENT _RECIPE_STEP", currentStep);
+            extra.putParcelable("CURRENT_RECIPE_STEP", currentStep);
             Intent recipeStepDetailActivityIntent =
                     new Intent(this, RecipeStepDetailActivity.class);
             recipeStepDetailActivityIntent.putExtras(extra);

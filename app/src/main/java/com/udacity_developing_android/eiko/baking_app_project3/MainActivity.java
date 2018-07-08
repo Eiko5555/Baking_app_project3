@@ -91,6 +91,7 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
             recipeAdapter.setRecipeData(data);
             if (data == null){
                 showErrorMessage();
+                progressBar.setVisibility(View.VISIBLE);
             }else {
                 showRecipe();
             }
@@ -98,9 +99,7 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
 
                 @Override
                 public void onLoaderReset(Loader<ArrayList<Recipe>>
-                                                  loader) {
-
-                }
+                                                  loader) { }
             };
 
 
@@ -110,9 +109,8 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
         setContentView(R.layout.main);
         ButterKnife.bind(this);
         int orientation = GridLayout.VERTICAL;
-        int span = 1;
         GridLayoutManager layoutManager = new GridLayoutManager(
-                this, span, orientation, false);
+                this, 1, orientation, false);
         recipeRecyclerView.setHasFixedSize(true);
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeAdapter = new RecipeAdapter(this, this);
@@ -171,6 +169,6 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
 
     private void showRecipe(){
         recipeRecyclerView.setVisibility(View.VISIBLE);
-//        errorMessage.setVisibility(View.INVISIBLE);
+        errorMessage.setVisibility(View.INVISIBLE);
     }
 }

@@ -8,10 +8,10 @@
 
     <fragment
         android:id="@+id/recipe_step_fragment"
+        android:name="com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="40"
-        android:name="com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepFragment"/>
+        android:layout_weight="40"/>
 
     <View
         android:layout_width="0dp"
