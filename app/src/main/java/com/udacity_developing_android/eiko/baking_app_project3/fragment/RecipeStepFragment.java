@@ -64,9 +64,9 @@ public class RecipeStepFragment extends Fragment implements
         Bundle recipeBundle = getActivity().getIntent().getExtras();
         recipe = recipeBundle.getParcelable("RECIPE_DETAIL_INFORMATION");
         recipeNameTextView.setText(recipe.getName());
-        recipeHeading.setText("Ingredients");
-        stepHeading.setText("Steps");
-        stepSubTitle.setText("Click steps to see detail.");
+        recipeHeading.setText("INGREDIENTS");
+        stepHeading.setText("STEPS");
+        stepSubTitle.setText("Click step to see detail.");
 
         ArrayList<String> ingredientList = recipe.getIngredient();
         ArrayList<RecipeStep> recipeStepList = recipe.getSteps();

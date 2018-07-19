@@ -1,4 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="activity_widget_textsize">15sp</dimen>
+    <dimen name="text_twentytwo">22sp</dimen>
+    <dimen name="text_five">5sp</dimen>
+    <dimen name="five">5dp</dimen>
 </resources>

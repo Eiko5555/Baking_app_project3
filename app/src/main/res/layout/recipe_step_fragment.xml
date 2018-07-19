@@ -17,29 +17,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/five"
             android:textStyle="bold"
-            tools:text="cookie" />
+            android:textSize="@dimen/text_twentytwo"
+            tools:text="COOKIES" />
 
         <LinearLayout
             android:id="@+id/reipe_ingredients"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/five">
 
             <TextView
                 android:id="@+id/recipe_ingredient_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp" />
+                android:paddingBottom="@dimen/five"
+                tools:text="INGREDIENTS"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recipe_ingredient_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginLeft="@dimen/five"
+                android:layout_marginRight="@dimen/five"/>
         </LinearLayout>
 
         <LinearLayout
@@ -47,27 +49,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/five">
 
             <TextView
                 android:id="@+id/recipe_step_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="resipe steps..." />
+                tools:text="STEP"
+                android:paddingBottom="@dimen/text_five"/>
 
             <TextView
                 android:id="@+id/recipe_step_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/five"
                 tools:text="subtitle.." />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recipe_step_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginLeft="@dimen/five"
+                android:layout_marginRight="@dimen/five"/>
 
         </LinearLayout>
     </LinearLayout>

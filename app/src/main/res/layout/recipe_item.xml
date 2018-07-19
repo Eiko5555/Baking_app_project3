@@ -26,14 +26,16 @@
                 android:id="@+id/recipe_image_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/text_twentytwo"
+                android:textStyle="bold"
                 tools:text="recipe name" />
 
             <ImageView
                 android:id="@+id/recipe_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 tools:src="@drawable/recipebook" />
         </LinearLayout>
 

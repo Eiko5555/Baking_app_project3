@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
-RecipeAdapter.RecipeAdapterOnClickHandler{
+        RecipeAdapter.RecipeAdapterOnClickHandler {
 
     public static final int NETWORK_RECIPE_LOADER_ID = 1;
     @BindView(R.id.recyclerview)
@@ -43,63 +43,64 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
     LoaderManager.LoaderCallbacks<ArrayList<Recipe>> recipeLoader =
             new LoaderManager.LoaderCallbacks<ArrayList<Recipe>>() {
 
-        @Override
+                @Override
                 public Loader<ArrayList<Recipe>> onCreateLoader(
                         int id, Bundle args) {
-            return new AsyncTaskLoader<ArrayList<Recipe>>
-                    (MainActivity.this) {
+                    return new AsyncTaskLoader<ArrayList<Recipe>>
+                            (MainActivity.this) {
 
-                ArrayList<Recipe> recipeList;
+                        ArrayList<Recipe> recipeList;
 
-                @Override
-                protected void onStartLoading() {
-                    if (recipeList != null){
-                        deliverResult(recipeList);
-                    }else {
-                        forceLoad();
-                    }
-                }
-
-                @Override
-                public ArrayList<Recipe> loadInBackground() {
-                    ArrayList<Recipe> listOfRecipe = null;
-                    try{
-                        if (NetworkUtil.
-                                isNetworkConected(getContext())){
-                            listOfRecipe = RecipeJsonUtil
-                                    .getRecipe(RecipeJsonUtil.RECIPE_URL);
+                        @Override
+                        protected void onStartLoading() {
+                            if (recipeList != null) {
+                                deliverResult(recipeList);
+                            } else {
+                                forceLoad();
                             }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    return listOfRecipe;
-                }
+                        }
 
-                @Override
-                public void deliverResult(ArrayList<Recipe> data) {
-                    recipeList = data;
-                    super.deliverResult(data);
+                        @Override
+                        public ArrayList<Recipe> loadInBackground() {
+                            ArrayList<Recipe> listOfRecipe = null;
+                            try {
+                                if (NetworkUtil.
+                                        isNetworkConected(getContext())) {
+                                    listOfRecipe = RecipeJsonUtil
+                                            .getRecipe(RecipeJsonUtil.RECIPE_URL);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return listOfRecipe;
+                        }
+
+                        @Override
+                        public void deliverResult(ArrayList<Recipe> data) {
+                            recipeList = data;
+                            super.deliverResult(data);
+                        }
+                    };
                 }
-            };
-        }
 
                 @Override
                 public void onLoadFinished(Loader<ArrayList<Recipe>>
                                                    loader,
                                            ArrayList<Recipe> data) {
-//            progressBar.setVisibility(View.INVISIBLE);
-            recipeAdapter.setRecipeData(data);
-            if (data == null){
-                showErrorMessage();
-                progressBar.setVisibility(View.VISIBLE);
-            }else {
-                showRecipe();
-            }
-                }
+                    progressBar.setVisibility(View.INVISIBLE);
+                    recipeAdapter.setRecipeData(data);
+                        if (data == null) {
+                            showErrorMessage();
+                            progressBar.setVisibility(View.VISIBLE);
+                        } else {
+                            showRecipe();
+                        }
+                    }
 
                 @Override
                 public void onLoaderReset(Loader<ArrayList<Recipe>>
-                                                  loader) { }
+                                                  loader) {
+                }
             };
 
 
@@ -108,9 +109,10 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ButterKnife.bind(this);
+        int span_value = getResources().getInteger(R.integer.gridlayout_span_value);
         int orientation = GridLayout.VERTICAL;
         GridLayoutManager layoutManager = new GridLayoutManager(
-                this, 1, orientation, false);
+                this, span_value, orientation, false);
         recipeRecyclerView.setHasFixedSize(true);
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeAdapter = new RecipeAdapter(this, this);
@@ -162,12 +164,12 @@ RecipeAdapter.RecipeAdapterOnClickHandler{
         startActivity(recipeIntent);
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage() {
         recipeRecyclerView.setVisibility(View.INVISIBLE);
         errorMessage.setVisibility(View.VISIBLE);
     }
 
-    private void showRecipe(){
+    private void showRecipe() {
         recipeRecyclerView.setVisibility(View.VISIBLE);
         errorMessage.setVisibility(View.INVISIBLE);
     }

@@ -46,7 +46,8 @@ public class NetworkUtil {
                 } else {
                 }
             }
-        } finally {
+        }
+        finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
