@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepDetailFragment;
 import com.udacity_developing_android.eiko.baking_app_project3.fragment.RecipeStepFragment;
-import com.udacity_developing_android.eiko.baking_app_project3.Recipe;
-import com.udacity_developing_android.eiko.baking_app_project3.RecipeStep;
 import java.util.ArrayList;
 
 public class RecipeDetailActivity extends AppCompatActivity

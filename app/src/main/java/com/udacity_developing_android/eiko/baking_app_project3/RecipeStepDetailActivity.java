@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.udacity_developing_android.eiko.baking_app_project3.RecipeStep;
 
 public class RecipeStepDetailActivity extends AppCompatActivity {
 

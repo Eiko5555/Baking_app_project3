@@ -11,9 +11,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.PortUnreachableException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class RecipeJsonUtil {
