@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.udacity_developing_android.eiko.baking_app_project3.R;
@@ -18,9 +19,13 @@ import java.util.Arrays;
 public class RecipeWidgetProvider extends AppWidgetProvider{
 
     private static final String DIVIDER = ":";
-    private static String LOG = RecipeWidgetProvider.class.getSimpleName();
     private static String recipeName = "";
     private static String recipeIngredient = "";
+
+//    public RecipeWidgetProvider(Context applicationContext,
+//                                AppWidgetManager appWidgetManager,
+//                                Intent intent) {
+//    }
 
     static void updateAppwidget(Context context,
                                 AppWidgetManager appWidgetManager,
@@ -36,37 +41,41 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
 
         if (recipewidgetDetail.contains(DIVIDER)){
             String[] parts = recipewidgetDetail.split(DIVIDER);
-            recipeName = parts[1];
+            recipeName = parts[0];
             recipeIngredient = parts[1];
         }
-
+        Log.i("Provider1", recipewidgetDetail.toString());
+        Log.i("Provider2", recipeName);
+        Log.i("Provider3", recipeIngredient);
         ArrayList<String> ingredientList = new ArrayList<>(Arrays.asList(
                 recipeIngredient));
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.recipe_widget_provider);
         views.setTextViewText(R.id.widget_recipe_text_name, recipeName);
-        views.setTextViewText(R.id.widget_recipe_ingredient_list,
-                recipeIngredient);
+//        views.setTextViewText(R.id.widget_recipe_ingredient_list,
+//                recipeIngredient);
 
-        String image = (recipeName.replaceAll("\\s+", ""))
-                .toLowerCase();
-        int imageResId = context.getResources().getIdentifier(
-                image,"drawable", context.getPackageName());
-        views.setImageViewResource(R.id.widget_recipe_image, imageResId);
+//        String image = (recipeName.replaceAll("\\s+", ""))
+//                .toLowerCase();
+//        int imageResId = context.getResources().getIdentifier(
+//                image,"drawable", context.getPackageName());
+//        views.setImageViewResource(R.id.widget_recipe_image, imageResId);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("RECIPE_DETAIL_INFORMATION", recipeAvailable);
+        Log.i("Provider4", recipeAvailable.toString());
+        //Adding widget listview.
+        Intent intent_listremoteview = new Intent(context, ListRemoteviewFactory.class);
+        views.setRemoteAdapter(R.id.widget_listview, intent_listremoteview);
+
         Intent intent = new Intent(context, RecipeDetailActivity.class);
         intent.putExtras(bundle);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_recipe_card,
-                pendingIntent);
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_recipe_card, pendingIntent);
 
         appWidgetManager.updateAppWidget(appwidgetId, views);
-
     }
 
     @Override

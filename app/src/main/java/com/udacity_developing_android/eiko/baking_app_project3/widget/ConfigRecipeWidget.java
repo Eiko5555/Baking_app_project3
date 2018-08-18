@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,13 +133,14 @@ public class ConfigRecipeWidget extends Activity {
                         selectedRecipe);
                 remoteViews.setTextViewText(R.id.widget_recipe_ingredient_list,
                         recipeHashmap.get(selectedRecipe));
-                String imageName = (selectedRecipe.replaceAll("\\s+"
-                        , "")).toLowerCase();
-                int imageResId = getApplicationContext().getResources().
-                        getIdentifier(imageName, "drawable",
-                                getApplicationContext().getPackageName());
-                remoteViews.setImageViewResource(
-                        R.id.widget_recipe_image, imageResId);
+                Log.i("config",selectedRecipe);
+//                String imageName = (selectedRecipe.replaceAll("\\s+"
+//                        , "")).toLowerCase();
+//                int imageResId = getApplicationContext().getResources().
+//                        getIdentifier(imageName, "drawable",
+//                                getApplicationContext().getPackageName());
+//                remoteViews.setImageViewResource(
+//                        R.id.widget_recipe_image, imageResId);
 
                 saveRecipePreference(getApplicationContext(),
                         appWidgetId, selectedRecipe + ":" +
@@ -170,6 +173,7 @@ public class ConfigRecipeWidget extends Activity {
         prefs.putString(PREF_KEY + appWidgetId, text);
         Gson gson = new Gson();
         String json = gson.toJson(currentRecipe);
+        Log.i("config", json);
         prefs.putString(PRE_RECIPE_KEY + appWidgetId, json);
         prefs.apply();
     }
@@ -202,4 +206,5 @@ public class ConfigRecipeWidget extends Activity {
                 appWidgetId, null);
         return recipeDetail;
     }
+
 }
