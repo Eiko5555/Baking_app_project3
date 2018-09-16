@@ -44,15 +44,59 @@ public class ConfigRecipeWidget extends Activity {
     private static ArrayList<String> spinnerOption = new ArrayList<>();
     private static AppWidgetManager widgetManager;
     private static RemoteViews remoteViews;
-    private ArrayList<Recipe> recipeList;
     int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     @BindView(R.id.spinner_recipe_name)
     Spinner recipeNameSpinner;
     @BindView(R.id.button_add)
     Button appWidgetButton;
+    Context context;
+    private ArrayList<Recipe> recipeList;
 
     public ConfigRecipeWidget() {
         super();
+    }
+
+    public static void saveRecipePreference(Context context,
+                                            int appWidgetId,
+                                            String text,
+                                            Recipe currentRecipe) {
+        SharedPreferences.Editor prefs = context.getSharedPreferences(
+                PREF_NAME, 0).edit();
+        prefs.putString(PREF_KEY + appWidgetId, text);
+        Gson gson = new Gson();
+        String json = gson.toJson(currentRecipe);
+        Log.i("config", json);
+        prefs.putString(PRE_RECIPE_KEY + appWidgetId, json);
+        prefs.apply();
+    }
+
+    public static Recipe getCurrentRecipePreference(Context context,
+                                                    int appwidgetId) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREF_NAME, 0);
+        String jsoncurrent = preferences.getString(PRE_RECIPE_KEY +
+                appwidgetId, null);
+        Gson gsoncurrent = new Gson();
+        Recipe currentRecipe = gsoncurrent.fromJson(jsoncurrent,
+                Recipe.class);
+        return currentRecipe;
+    }
+
+    public static void deleteRecipePreference(Context context,
+                                              int appwidgetId) {
+        SharedPreferences.Editor preferences = context.getSharedPreferences(
+                PREF_NAME, 0).edit();
+        preferences.remove(PREF_KEY + appwidgetId);
+        preferences.apply();
+    }
+
+    public static String getRecipeDetailPreference(Context context,
+                                                   int appWidgetId) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREF_NAME, 0);
+        String recipeDetail = preferences.getString(PREF_KEY +
+                appWidgetId, null);
+        return recipeDetail;
     }
 
     @Override
@@ -114,6 +158,7 @@ public class ConfigRecipeWidget extends Activity {
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
+        ;
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
             return;
@@ -131,9 +176,19 @@ public class ConfigRecipeWidget extends Activity {
                 }
                 remoteViews.setTextViewText(R.id.widget_recipe_text_name,
                         selectedRecipe);
+                String string = recipeHashmap.get(selectedRecipe);
+                SharedPreferences sp = getApplicationContext()
+                        .getSharedPreferences("RecipeWidget", 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("zairyou", string);
+                editor.apply();
+                Log.i("erabou", string);
+                Intent i = new Intent(getApplicationContext(), ListRemoteviewFactory.class);
+                i.putExtra("ingrediendlist", string);
+                remoteViews.setRemoteAdapter(R.id.widget_listview, i);
                 remoteViews.setTextViewText(R.id.widget_recipe_ingredient_list,
                         recipeHashmap.get(selectedRecipe));
-                Log.i("config",selectedRecipe);
+                Log.i("config", selectedRecipe);
 //                String imageName = (selectedRecipe.replaceAll("\\s+"
 //                        , "")).toLowerCase();
 //                int imageResId = getApplicationContext().getResources().
@@ -164,47 +219,4 @@ public class ConfigRecipeWidget extends Activity {
         });
 
     }
-    public static void saveRecipePreference(Context context,
-                                            int appWidgetId,
-                                            String text,
-                                            Recipe currentRecipe) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(
-                PREF_NAME, 0).edit();
-        prefs.putString(PREF_KEY + appWidgetId, text);
-        Gson gson = new Gson();
-        String json = gson.toJson(currentRecipe);
-        Log.i("config", json);
-        prefs.putString(PRE_RECIPE_KEY + appWidgetId, json);
-        prefs.apply();
-    }
-
-    public static Recipe getCurrentRecipePreference(Context context,
-                                                    int appwidgetId) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                PREF_NAME, 0);
-        String jsoncurrent = preferences.getString(PRE_RECIPE_KEY +
-                appwidgetId, null);
-        Gson gsoncurrent = new Gson();
-        Recipe currentRecipe = gsoncurrent.fromJson(jsoncurrent,
-                Recipe.class);
-        return currentRecipe;
-    }
-
-    public static void deleteRecipePreference(Context context,
-                                              int appwidgetId) {
-        SharedPreferences.Editor preferences = context.getSharedPreferences(
-                PREF_NAME, 0).edit();
-        preferences.remove(PREF_KEY + appwidgetId);
-        preferences.apply();
-    }
-
-    public static String getRecipeDetailPreference(Context context,
-                                                   int appWidgetId) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                PREF_NAME, 0);
-        String recipeDetail = preferences.getString(PREF_KEY +
-                appWidgetId, null);
-        return recipeDetail;
-    }
-
 }

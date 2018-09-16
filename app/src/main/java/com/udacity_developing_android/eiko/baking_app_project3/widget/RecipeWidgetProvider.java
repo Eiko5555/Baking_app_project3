@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -16,11 +17,12 @@ import com.udacity_developing_android.eiko.baking_app_project3.RecipeDetailActiv
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RecipeWidgetProvider extends AppWidgetProvider{
+public class RecipeWidgetProvider extends AppWidgetProvider {
 
     private static final String DIVIDER = ":";
     private static String recipeName = "";
     private static String recipeIngredient = "";
+    private static ArrayList<String> ingredientList;
 
 //    public RecipeWidgetProvider(Context applicationContext,
 //                                AppWidgetManager appWidgetManager,
@@ -29,17 +31,17 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
 
     static void updateAppwidget(Context context,
                                 AppWidgetManager appWidgetManager,
-                                int appwidgetId){
+                                int appwidgetId) {
         Recipe recipeAvailable = ConfigRecipeWidget.
                 getCurrentRecipePreference(context, appwidgetId);
         String recipewidgetDetail = ConfigRecipeWidget.
                 getRecipeDetailPreference(context, appwidgetId);
 
-        if (recipewidgetDetail == null){
+        if (recipewidgetDetail == null) {
             return;
         }
 
-        if (recipewidgetDetail.contains(DIVIDER)){
+        if (recipewidgetDetail.contains(DIVIDER)) {
             String[] parts = recipewidgetDetail.split(DIVIDER);
             recipeName = parts[0];
             recipeIngredient = parts[1];
@@ -47,7 +49,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
         Log.i("Provider1", recipewidgetDetail.toString());
         Log.i("Provider2", recipeName);
         Log.i("Provider3", recipeIngredient);
-        ArrayList<String> ingredientList = new ArrayList<>(Arrays.asList(
+        ingredientList = new ArrayList<>(Arrays.asList(
                 recipeIngredient));
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.recipe_widget_provider);
@@ -61,12 +63,24 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
 //                image,"drawable", context.getPackageName());
 //        views.setImageViewResource(R.id.widget_recipe_image, imageResId);
 
+//Adding widget listview.
+        SharedPreferences sp = context.getApplicationContext().getSharedPreferences(
+                "RecipeWidget", 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("KONDATE", recipeIngredient);
+        editor.apply();
+        Intent intent_list = new Intent(context, ListRemoteviewFactory.class);
+        intent_list.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appwidgetId);
+        intent_list.putExtra("ingrediendlist", ingredientList.toString());
+        views.setRemoteAdapter(R.id.widget_listview, intent_list);
         Bundle bundle = new Bundle();
         bundle.putParcelable("RECIPE_DETAIL_INFORMATION", recipeAvailable);
+//        bundle.putParcelableArrayList(ingredientList);
         Log.i("Provider4", recipeAvailable.toString());
-        //Adding widget listview.
-        Intent intent_listremoteview = new Intent(context, ListRemoteviewFactory.class);
-        views.setRemoteAdapter(R.id.widget_listview, intent_listremoteview);
+//        //Adding widget listview.
+//        Intent intent_list = new Intent(context, ListRemoteviewFactory.class);
+//        intent_list.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appwidgetId);
+//        views.setRemoteAdapter(R.id.widget_listview, intent_list);
 
         Intent intent = new Intent(context, RecipeDetailActivity.class);
         intent.putExtras(bundle);
@@ -82,7 +96,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         for (int appwidgetId : appWidgetIds)
-        updateAppwidget(context, appWidgetManager, appwidgetId);
+            updateAppwidget(context, appWidgetManager, appwidgetId);
     }
 
     @Override
@@ -97,7 +111,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider{
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds){
+        for (int appWidgetId : appWidgetIds) {
             ConfigRecipeWidget.deleteRecipePreference(
                     context, appWidgetId);
         }
